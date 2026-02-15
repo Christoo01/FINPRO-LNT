@@ -3,7 +3,7 @@
  * Handles state management, routing, and DOM rendering.
  */
 
-// --- DATA INITIALIZATION ---
+//DATA INITIALIZATION
 const initialProfile = {
     name: "Admin User",
     role: "Store Manager",
@@ -33,7 +33,7 @@ const services = [
     { id: '4', name: 'Recolor', description: 'Full shoe recoloring', price: 150000, duration: '7 Days', icon: 'auto_fix_high', isActive: true },
 ];
 
-// --- GLOBAL STATE ---
+//GLOBAL STATE
 const appState = {
     currentPage: 'dashboard',
     userProfile: { ...initialProfile },
@@ -44,8 +44,7 @@ const appState = {
     orderFilter: 'All'
 };
 
-// --- ACTIONS (Logika Bisnis) ---
-
+//ACTIONS
 function navigate(page) {
     appState.currentPage = page;
     render();
@@ -59,7 +58,6 @@ function setOverlay(type, order = null) {
 }
 
 function closeOverlay() {
-    // Menangani animasi tutup sebelum menghapus elemen
     const modal = document.querySelector('.modal-content');
     const sidebar = document.querySelector('.sidebar-content');
     const bg = document.querySelector('.modal-bg');
@@ -76,7 +74,6 @@ function closeOverlay() {
         bg.classList.add('fade-enter');
     }
     
-    // Tunggu animasi selesai
     setTimeout(() => {
         appState.activeOverlay = 'none';
         appState.selectedOrder = null;
@@ -102,7 +99,7 @@ function addOrder(e) {
     appState.orders.unshift(newOrder);
     closeOverlay();
     if(appState.currentPage === 'dashboard' || appState.currentPage === 'orders') {
-        render(); // Re-render untuk menampilkan data baru
+        render();
     }
 }
 
@@ -147,7 +144,7 @@ function setFilter(filter) {
     render();
 }
 
-// --- HTML GENERATORS (Template Functions) ---
+//HTML GENERATORS
 
 function getHeaderHTML(title, subtitle, showAdd = false, addAction = '', addLabel = 'Add') {
     return `
@@ -175,7 +172,7 @@ function renderDashboard() {
     const revenue = orders.reduce((acc, curr) => acc + curr.total, 0);
     const activeCount = orders.filter(o => !['Delivered', 'Ready'].includes(o.status)).length;
     
-    // Helper stats
+    //Helper stats
     const getCount = (statuses) => orders.filter(o => statuses.includes(o.status)).length;
     
     const stats = [
@@ -613,7 +610,7 @@ function renderTracking() {
     `;
 }
 
-// --- OVERLAY RENDERER (Modals, Sidebar) ---
+//OVERLAY RENDERER (Modals, Sidebar)
 
 function renderOverlay() {
     const container = document.getElementById('overlay-container');
@@ -782,10 +779,10 @@ function render() {
     const app = document.getElementById('app');
     renderBottomNav();
     
-    // Clear prev content
+    //Clear prev content
     app.innerHTML = '';
 
-    // Simple routing
+    //Simple routing
     switch (appState.currentPage) {
         case 'dashboard': app.innerHTML = renderDashboard(); break;
         case 'orders': app.innerHTML = renderOrders(); break;
@@ -797,7 +794,8 @@ function render() {
     }
 }
 
-// --- INIT ---
+//INIT
 window.addEventListener('load', () => {
     render();
+
 });
